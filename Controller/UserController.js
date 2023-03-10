@@ -11,6 +11,7 @@ export async function logout() {
 export async function logIn(user) {
   try {
     await AsyncStorage.setItem("currentUser", JSON.stringify(user));
+    await AsyncStorage.setItem("projects", "[]");
   } catch (error) {
     return false;
   }

@@ -1,25 +1,34 @@
 import * as React from "react";
-import { View, Text, Button, SafeAreaView, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  SafeAreaView,
+  TextInput,
+  Alert,
+} from "react-native";
 import { logout } from "../Controller/UserController";
 import { addProjects, getProjects } from "../Controller/ProjectController";
+import Header from "../Components/Header";
 
 export default function Dashboard({ navigation }) {
-  const [projects, setProjects] = React.useState(
-    getProjects() ? getProjects() : []
-  );
+  const [projects, setProjects] = React.useState([]);
 
   const [projectName, setProjectName] = React.useState("");
 
-  async function logoutFunc() {
-    try {
-      const isNotAbleToLogout = await logout();
-      if (!isNotAbleToLogout) {
-        navigation.navigate("LoginScreen");
+  React.useEffect(() => {
+    async function getProjectsFunc() {
+      const localProjects = await getProjects();
+      if (localProjects === undefined) {
+        return;
       }
-    } catch (error) {
-      alert("Error while logging out");
+      if (localProjects === null) {
+        localProjects = [];
+      }
+      setProjects(localProjects);
     }
-  }
+    getProjectsFunc();
+  }, []);
 
   async function addProject(projectName) {
     if (projectName === "") {
@@ -28,20 +37,26 @@ export default function Dashboard({ navigation }) {
     }
 
     let new_projects = projects;
-    new_projects.push({ name: projectName });
+    var project = {
+      id: projects.length + 1,
+      name: projectName,
+      description: "Please update the description",
+      tasks: [],
+      // setting the start date to today in dd/mm/yyyy format
+      startDate: new Date().toLocaleDateString(),
+      // setting the end date to 14 day after the start date
+      endDate: new Date(
+        new Date().getTime() + 14 * 24 * 60 * 60 * 1000
+      ).toLocaleDateString(),
+    };
+    new_projects.push(project);
     const isAbleToAddProject = await addProjects(new_projects);
-    if (isAbleToAddProject) {
-      setProjects(getProjects());
-    }
+    setProjectName("");
   }
 
   return (
     <SafeAreaView>
-      <View className="flex flex-row justify-center items-center">
-        <Text className="text-xl">Welcome to the dashboard</Text>
-        <Button title="Logout" onPress={() => logoutFunc()} />
-      </View>
-
+      <Header />
       <View className="flex flex-row justify-center items-center mt-6">
         <TextInput
           className="border-2 border-black"
@@ -49,19 +64,24 @@ export default function Dashboard({ navigation }) {
           value={projectName}
           onChangeText={(projectName) => setProjectName(projectName)}
         />
-
         <Button title="Create" onPress={() => addProject(projectName)} />
       </View>
-
       <View className="flex flex-col justify-center items-center mt-6">
-        {/* {(projects.length > 0 || projects != null) ??
-          projects.map((project) => {
-            return (
-              <View className="flex flex-row justify-center items-center">
-                <Text className="text-xl">{project.name}</Text>
-              </View>
-            );
-          })} */}
+        {projects.map((project, index) => {
+          return (
+            <View
+              key={index}
+              className="flex flex-row justify-center items-center"
+            >
+              <Text className="text-xl">{project.name}</Text>
+              <Button
+                title="View"
+                onPress={() => navigation.navigate("Project", { project })}
+              />
+              <Button title="Delete" />
+            </View>
+          );
+        })}
       </View>
     </SafeAreaView>
   );

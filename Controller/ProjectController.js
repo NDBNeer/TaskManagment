@@ -2,11 +2,8 @@ import { AsyncStorage, Alert } from "react-native";
 
 export async function addProjects(projects) {
   try {
-    Alert.alert(JSON.stringify(projects));
     await AsyncStorage.setItem("projects", JSON.stringify(projects));
-    return true;
   } catch (error) {
-    Alert.alert("Error while adding projects");
     return false;
   }
 }
