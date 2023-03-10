@@ -25,11 +25,14 @@ export default function ProjectScreen({ route, navigation }) {
     var task = {
       id: tasks.length + 1,
       name: taskName,
-      description: "Please update the description",
+      description: "",
+      status: "To Do",
+      assignee: "",
+      totalHoursWorked: 0,
+      hourlyRate: 0,
+      // setting the start date to today in dd/mm/yyyy format
       startDate: new Date().toLocaleDateString(),
-      endDate: new Date(
-        new Date().getTime() + 14 * 24 * 60 * 60 * 1000
-      ).toLocaleDateString(),
+      endDate: project.endDate,
     };
     new_tasks.push(task);
     setTasks(new_tasks);

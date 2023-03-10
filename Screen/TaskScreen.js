@@ -12,6 +12,10 @@ export default function TaskScreen({ route, navigation }) {
       <Text>{task.description}</Text>
       <Text>{task.startDate}</Text>
       <Text>{task.endDate}</Text>
+      <Text>{task.status}</Text>
+      <Text>{task.assignee}</Text>
+      <Text>{task.totalHoursWorked}</Text>
+      <Text>{task.hourlyRate}</Text>
     </SafeAreaView>
   );
 }
