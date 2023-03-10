@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./Screen/LoginScreen";
 import Dashboard from "./Screen/DashboardScreen";
 import { isUserLoggedIn } from "./Controller/UserController";
+import ProjectScreen from "./Screen/ProjectScreen";
+import TaskScreen from "./Screen/TaskScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,23 @@ function App() {
         <Stack.Screen
           name="Dashboard"
           component={Dashboard}
+          options={{
+            headerBackVisible: false,
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Project"
+          component={ProjectScreen}
+          options={{
+            headerBackVisible: false,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Task"
+          component={TaskScreen}
           options={{
             headerBackVisible: false,
             headerShown: false,
