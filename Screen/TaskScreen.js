@@ -6,7 +6,6 @@ export default function TaskScreen({ route, navigation }) {
   const [task, setTask] = React.useState(route.params.task);
   return (
  <SafeAreaView>
-     <Header></Header>
       <View className="flex flex-col bg-gray-200 rounded-md m-3">
           <View className="bg-indigo-900  p-2" style={{borderTopLeftRadius: 5, borderTopRightRadius: 5}}>
              <Text className="text-base font-bold mb-2 text-white " >{task.name}</Text>
