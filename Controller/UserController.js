@@ -1,4 +1,5 @@
-import { AsyncStorage, Alert } from "react-native";
+import { Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function logout() {
   try {
