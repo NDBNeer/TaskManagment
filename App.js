@@ -38,18 +38,18 @@ function App() {
         <Stack.Screen
           name="Project"
           component={ProjectScreen}
-          options={{
-            headerBackVisible: false,
-            headerShown: false,
-          }}
+          // options={{
+          //   headerBackVisible: false,
+          //   headerShown: false,
+          // }}
         />
         <Stack.Screen
           name="Task"
           component={TaskScreen}
-          options={{
-            headerBackVisible: false,
-            headerShown: false,
-          }}
+          // options={{
+          //   headerBackVisible: false,
+          //   headerShown: false,
+          // }}
         />
       </Stack.Navigator>
     </NavigationContainer>

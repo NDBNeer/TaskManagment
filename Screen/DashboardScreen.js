@@ -71,14 +71,34 @@ export default function Dashboard({ navigation }) {
           return (
             <View
               key={index}
-              className="flex flex-row justify-center items-center"
+              className="flex flex-row justify-center items-center border-2 border-gray-500"
             >
-              <Text className="text-xl">{project.name}</Text>
-              <Button
-                title="View"
-                onPress={() => navigation.navigate("Project", { project })}
-              />
-              <Button title="Delete" />
+              <View className="flex flex-col justify-center items-center">
+                <Text className="text-sm ml-2">Project Name</Text>
+                <View className="h-1 w-full bg-gray-500"></View>
+                <Text className="text-sm ml-2">{project.name}</Text>
+              </View>
+
+              <View className="flex flex-col justify-center items-center">
+                <Text className="text-sm ml-2">Start Date</Text>
+                <View className="h-1 w-full bg-gray-500"></View>
+                <Text className="text-sm ml-2">{project.startDate}</Text>
+              </View>
+              <View className="flex flex-col justify-center items-center">
+                <Text className="text-sm ml-2">End Date</Text>
+                <View className="h-1 w-full bg-gray-500"></View>
+                <Text className="text-sm ml-2">{project.startDate}</Text>
+              </View>
+
+              <View className="flex flex-col justify-center items-center text-sm">
+                <Text className="text-sm ml-2">Actions</Text>
+                <Button
+                  className="text-sm"
+                  title="View"
+                  onPress={() => navigation.navigate("Project", { project })}
+                />
+                <Button className="text-sm" title="Delete" />
+              </View>
             </View>
           );
         })}

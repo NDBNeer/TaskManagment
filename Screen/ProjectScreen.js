@@ -54,9 +54,9 @@ export default function ProjectScreen({ route, navigation }) {
 
       <View className="flex flex-col justify-center items-center mt-6">
         <Text className="text-xl">{project.name}</Text>
-        <Text className="text-xl">{project.description}</Text>
-        <Text className="text-xl">{project.startDate}</Text>
-        <Text className="text-xl">{project.endDate}</Text>
+        <TextInput className="text-xl">{project.description}</TextInput>
+        <TextInput className="text-xl">{project.startDate}</TextInput>
+        <TextInput className="text-xl">{project.endDate}</TextInput>
       </View>
 
       <View className="flex flex-col justify-center items-center mt-6">
