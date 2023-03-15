@@ -3,7 +3,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function logout() {
   try {
-    await AsyncStorage.removeItem("currentUser");
+    await AsyncStorage.removeItem("currentUser").then((res) => {
+      return true;
+    });
   } catch (error) {
     return false;
   }

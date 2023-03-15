@@ -5,14 +5,15 @@ import {
   Button,
   SafeAreaView,
   TextInput,
-  Alert,TouchableOpacity,ScrollView,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { logout } from "../Controller/UserController";
 import { addProjects, getProjects } from "../Controller/ProjectController";
 import Header from "../Components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
-
 
 export default function Dashboard({ navigation }) {
   const [projects, setProjects] = React.useState([]);
@@ -58,68 +59,90 @@ export default function Dashboard({ navigation }) {
   }
 
   return (
-    
-    <SafeAreaView>
-      <Header />
+    <SafeAreaView className="">
+      <Header navigation={navigation} />
       <View className="bg-gray-200 rounded-md m-3">
-          <View className="bg-indigo-900  p-2" style={{borderTopLeftRadius: 5, borderTopRightRadius: 5}}>
-              <Text className="text-lg font-bold mb-2 text-white">New Project</Text>
-          </View>
-          <View className="flex flex-row justify-center items-center p-4">
-              <View className="w-4/5">
-                <TextInput
-                  className="w-full px-2 py-3 border-b-2 border-gray-500"
-                  placeholder="Create New Project"
-                  placeholderTextColor="#444"
-                  value={projectName}
-                  onChangeText={(projectName) => setProjectName(projectName)}
-                />
-              </View>
-              <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
-                <Text className="text-white text-center" onPress={() => addProject(projectName)}>Create</Text>
-              </View>
-         </View>
-      </View>
-    <ScrollView>
-<View className="flex flex-col justify-center items-center">
-  {projects.map((project, index) => {
-    return (
-      <View
-        key={index}
-        className="flex flex-row bg-gray-200 rounded-md m-3 p-6 "
-      >
-        <View className="flex flex-col justify-center items-start">
-          <View className="flex flex-row justify-start items-center mb-2">
-            <Text className="text-lg font-bold">{project.name}</Text>
-          </View>
-          <View className="h-0.5 w-full bg-indigo-900"></View>
-          <View className="flex flex-row justify-start items-center mb-1 mt-2">
-            <Text className="text-sm mr-2">Start Date:</Text>
-            <Text className="text-sm">{project.startDate}</Text>
-          </View>
-          <View className="flex flex-row justify-start items-center">
-            <Text className="text-sm mr-2">End Date:</Text>
-            <Text className="text-sm">{project.endDate}</Text>
-          </View>
+        <View
+          className="bg-indigo-900  p-2"
+          style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
+        >
+          <Text className="text-lg font-bold mb-2 text-white">New Project</Text>
         </View>
-        <View className="flex flex-col justify-center items-end text-sm">
-          <View className="flex flex-row justify-end items-center">
-            <TouchableOpacity
-              className="ml-2"
-              onPress={() => navigation.navigate("Project", { project })}
+        <View className="flex flex-row justify-center items-center p-4">
+          <View className="w-4/5">
+            <TextInput
+              className="w-full px-2 py-3 border-b-2 border-gray-500"
+              placeholder="Create New Project"
+              placeholderTextColor="#444"
+              value={projectName}
+              onChangeText={(projectName) => setProjectName(projectName)}
+            />
+          </View>
+          <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
+            <Text
+              className="text-white text-center"
+              onPress={() => addProject(projectName)}
             >
-            <FontAwesomeIcon icon={faEye} size={20} style={{ color: "indigo" }} />
-            </TouchableOpacity>
-            <TouchableOpacity className="ml-2">
-              <FontAwesomeIcon icon={faTrash} size={20} style={{ color: "red" }} />
-            </TouchableOpacity>
+              Create
+            </Text>
           </View>
         </View>
       </View>
-    );
-  })}
-</View>
-</ScrollView>
+      <View>
+        <Text className="text-lg font-bold mb-2 text-indigo-900 m-3">
+          Projects
+        </Text>
+      </View>
+      <ScrollView className="-mt-3">
+        <View className="flex flex-col justify-center items-center m-3">
+          {projects.map((project, index) => {
+            return (
+              <View
+                key={index}
+                className="flex flex-row w-full justify-evenly items-center bg-gray-200 rounded-md m-3 p-3"
+              >
+                <View className="flex flex-col justify-center items-start ">
+                  <View className="flex flex-row justify-start items-center mb-2">
+                    <Text className="text-lg font-bold">{project.name}</Text>
+                  </View>
+                  <View className="h-0.5 w-full bg-indigo-900"></View>
+                  <View className="flex flex-row justify-start items-center mb-1 mt-2">
+                    <Text className="text-sm mr-2">Start Date:</Text>
+                    <Text className="text-sm">{project.startDate}</Text>
+                  </View>
+                  <View className="flex flex-row justify-start items-center">
+                    <Text className="text-sm mr-2">End Date:</Text>
+                    <Text className="text-sm">{project.endDate}</Text>
+                  </View>
+                </View>
+                <View className="flex flex-col justify-center items-end text-sm ml-36">
+                  <View className="flex flex-row justify-end items-center">
+                    <TouchableOpacity
+                      className="ml-2"
+                      onPress={() =>
+                        navigation.navigate("Project", { project })
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faEye}
+                        size={20}
+                        style={{ color: "indigo" }}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity className="ml-6">
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        size={20}
+                        style={{ color: "red" }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
