@@ -88,10 +88,9 @@ export default function Dashboard({ navigation }) {
           </View>
         </View>
       </View>
-      <View>
-        <Text className="text-lg font-bold mb-2 text-indigo-900 m-3">
-          Projects
-        </Text>
+      <View className="p-3">
+        <Text className="text-xl ">Project List:</Text>
+        <View className="h-0.5 w-full bg-indigo-900 "></View>
       </View>
       <ScrollView className="-mt-3">
         <View className="flex flex-col justify-center items-center m-3">
@@ -99,43 +98,75 @@ export default function Dashboard({ navigation }) {
             return (
               <View
                 key={index}
-                className="flex flex-row w-full justify-evenly items-center bg-gray-200 rounded-md m-3 p-3"
+                className="flex flex-row w-full justify-center items-center bg-gray-200 rounded-md m-3 p-3"
               >
-                <View className="flex flex-col justify-center items-start ">
-                  <View className="flex flex-row justify-start items-center mb-2">
-                    <Text className="text-lg font-bold">{project.name}</Text>
-                  </View>
-                  <View className="h-0.5 w-full bg-indigo-900"></View>
-                  <View className="flex flex-row justify-start items-center mb-1 mt-2">
-                    <Text className="text-sm mr-2">Start Date:</Text>
-                    <Text className="text-sm">{project.startDate}</Text>
-                  </View>
-                  <View className="flex flex-row justify-start items-center">
-                    <Text className="text-sm mr-2">End Date:</Text>
-                    <Text className="text-sm">{project.endDate}</Text>
-                  </View>
-                </View>
-                <View className="flex flex-col justify-center items-end text-sm ml-36">
-                  <View className="flex flex-row justify-end items-center">
-                    <TouchableOpacity
-                      className="ml-2"
-                      onPress={() =>
-                        navigation.navigate("Project", { project })
-                      }
-                    >
-                      <FontAwesomeIcon
-                        icon={faEye}
-                        size={20}
-                        style={{ color: "indigo" }}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity className="ml-6">
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        size={20}
-                        style={{ color: "red" }}
-                      />
-                    </TouchableOpacity>
+                <View className="flex flex-row w-full justify-start items-start -ml-2">
+                  <View className="flex flex-col w-full justify-start items-start -ml-4">
+                    <View className="flex flex-col w-full items-start justify-center ml-4">
+                      <Text className="text-lg font-bold">{project.name}</Text>
+                      <View className="h-0.5 w-full bg-indigo-900"></View>
+                    </View>
+
+                    <View className="flex flex-row w-full">
+                      <View className="flex flex-col justify-center items-center ml-2">
+                        <View className="flex flex-row">
+                          <View className="flex flex-col items-center justify-center ml-2">
+                            <Text className="text-sm mr-2">Start Date</Text>
+                            <View className="h-0.5 w-20 bg-gray-400"></View>
+                            <Text className="text-sm">{project.startDate}</Text>
+                          </View>
+                          <View className="flex flex-col items-center justify-center">
+                            <View className="h-6 w-0.5 bg-indigo-900 ml-2"></View>
+                          </View>
+                        </View>
+                      </View>
+
+                      <View className="flex flex-col justify-center items-center ml-2">
+                        <View className="flex flex-row">
+                          <View className="flex flex-col items-center justify-center">
+                            <Text className="text-sm mr-2">End Date</Text>
+                            <View className="h-0.5 w-20 bg-gray-400"></View>
+                            <Text className="text-sm">{project.endDate}</Text>
+                          </View>
+                          <View className="flex flex-col items-center justify-center">
+                            <View className="h-6 w-0.5 bg-indigo-900 ml-2"></View>
+                          </View>
+                        </View>
+                      </View>
+
+                      <View className="flex flex-col justify-center items-center ml-2">
+                        <View className="flex flex-row">
+                          <View className="flex flex-col justify-center items-center">
+                            <Text className="text-sm mr-2">Status</Text>
+                            <View className="h-0.5 w-20 bg-gray-400"></View>
+                            <Text className="text-sm">Todo</Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View className="flex flex-col justify-center items-center ml-2">
+                        <View className="flex flex-row justify-center items-center ml-2">
+                          <TouchableOpacity
+                            className="ml-2"
+                            onPress={() =>
+                              navigation.navigate("Project", { project })
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={faEye}
+                              size={20}
+                              style={{ color: "indigo" }}
+                            />
+                          </TouchableOpacity>
+                          <TouchableOpacity className="ml-2">
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              size={20}
+                              style={{ color: "red" }}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
                   </View>
                 </View>
               </View>
