@@ -12,7 +12,6 @@ import Header from "../Components/Header";
 import { logout } from "../Controller/UserController";
 export default function ProjectScreen({ route, navigation }) {
   const { project } = route.params;
-
   const [tasks, setTasks] = React.useState(project.tasks);
   const [taskName, setTaskName] = React.useState("");
 
@@ -41,17 +40,25 @@ export default function ProjectScreen({ route, navigation }) {
   return (
     <SafeAreaView>
       <Header />
-
-      <View className="flex flex-row justify-center items-center mt-6">
-        <TextInput
-          className="border-2 border-black"
-          placeholder="Type to create task"
-          value={taskName}
-          onChangeText={(taskName) => setTaskName(taskName)}
-        />
-        <Button title="Create" onPress={() => addTask(taskName)} />
+<View className="bg-gray-200 rounded-md m-3">
+          <View className="bg-indigo-900  p-2" style={{borderTopLeftRadius: 5, borderTopRightRadius: 5}}>
+              <Text className="text-lg font-bold mb-2 text-white">New Task</Text>
+          </View>
+          <View className="flex flex-row justify-center items-center p-4">
+              <View className="w-4/5">
+                <TextInput
+                  className="w-full px-2 py-3 border-b-2 border-gray-500"
+                  placeholder="Create New Task"
+                  placeholderTextColor="#444"
+                  value={taskName}
+                  onChangeText={(taskName) => setTaskName(taskName)}
+                />
+              </View>
+              <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
+                <Text className="text-white text-center" onPress={() => addTask(taskName)}>Create</Text>
+              </View>
+         </View>
       </View>
-
       <View className="flex flex-col justify-center items-center mt-6">
         <Text className="text-xl">{project.name}</Text>
         <TextInput className="text-xl">{project.description}</TextInput>
