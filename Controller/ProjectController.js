@@ -1,8 +1,30 @@
-import { AsyncStorage, Alert } from "react-native";
+import { Storage } from "expo-storage";
 
 export async function addProjects(projects) {
+  console.log(projects);
   try {
-    await AsyncStorage.setItem("projects", JSON.stringify(projects));
+    await Storage.setItem({
+      key: "projects",
+      value: JSON.stringify(projects),
+    });
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function updateProject(updatedProject, idForUpdatedProject) {
+  try {
+    var projects = await getProjects();
+    projects.forEach((project) => {
+      if (project.id === idForUpdatedProject) {
+        project.name = updatedProject.name;
+        project.description = updatedProject.description;
+        project.startDate = updatedProject.startDate;
+        project.endDate = updatedProject.endDate;
+      }
+    });
+
+    await addProjects(projects);
   } catch (error) {
     return false;
   }
@@ -10,12 +32,13 @@ export async function addProjects(projects) {
 
 export async function getProjects() {
   try {
-    const value = await AsyncStorage.getItem("projects");
+    const value = JSON.parse(await Storage.getItem({ key: "projects" }));
     if (value !== null) {
-      return JSON.parse(value);
+      return value;
     }
     return [];
   } catch (error) {
-    // Error retrieving data
+    console.log(error);
+    return [];
   }
 }

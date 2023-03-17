@@ -10,10 +10,7 @@ import TaskScreen from "./Screen/TaskScreen";
 const Stack = createNativeStackNavigator();
 
 function App() {
-  var initialRoute = "LoginScreen";
-  if (isUserLoggedIn()) {
-    initialRoute = "Dashboard";
-  }
+  var [initialRoute, setInitialRoute] = React.useState("Dashboard");
 
   return (
     <NavigationContainer>
@@ -38,18 +35,18 @@ function App() {
         <Stack.Screen
           name="Project"
           component={ProjectScreen}
-          // options={{
-          //   headerBackVisible: false,
-          //   headerShown: false,
-          // }}
+          options={{
+            headerBackVisible: false,
+            headerShown: false,
+          }}
         />
         <Stack.Screen
           name="Task"
           component={TaskScreen}
-          // options={{
-          //   headerBackVisible: false,
-          //   headerShown: false,
-          // }}
+          options={{
+            headerBackVisible: false,
+            headerShown: false,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -9,11 +9,11 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { logout } from "../Controller/UserController";
 import { addProjects, getProjects } from "../Controller/ProjectController";
 import Header from "../Components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { isUserLoggedIn } from "../Controller/UserController";
 
 export default function Dashboard({ navigation }) {
   const [projects, setProjects] = React.useState([]);
@@ -29,9 +29,36 @@ export default function Dashboard({ navigation }) {
       if (localProjects === null) {
         localProjects = [];
       }
+
+      setProjects(localProjects);
+    }
+    return () => {
+      getProjectsFunc();
+    };
+  }, [projects]);
+
+  React.useEffect(() => {
+    async function checkLogin() {
+      const isLoggedIn = await isUserLoggedIn();
+      if (isLoggedIn) {
+        console.log("Logged in");
+      } else {
+        navigation.navigate("LoginScreen");
+      }
+    }
+    async function getProjectsFunc() {
+      const localProjects = await getProjects();
+      if (localProjects === undefined) {
+        return;
+      }
+      if (localProjects === null) {
+        localProjects = [];
+      }
+
       setProjects(localProjects);
     }
     getProjectsFunc();
+    checkLogin();
   }, []);
 
   async function addProject(projectName) {
@@ -54,8 +81,15 @@ export default function Dashboard({ navigation }) {
       ).toLocaleDateString(),
     };
     new_projects.push(project);
-    const isAbleToAddProject = await addProjects(new_projects);
+    await addProjects(new_projects);
     setProjectName("");
+  }
+
+  async function deleteProject(id) {
+    let new_projects = projects;
+    new_projects = new_projects.filter((project) => project.id !== id);
+    const isAbleToDeleteProject = await addProjects(new_projects);
+    setProjects(new_projects);
   }
 
   return (
@@ -157,7 +191,10 @@ export default function Dashboard({ navigation }) {
                               style={{ color: "indigo" }}
                             />
                           </TouchableOpacity>
-                          <TouchableOpacity className="ml-2">
+                          <TouchableOpacity
+                            className="ml-2"
+                            onPress={() => deleteProject(project.id)}
+                          >
                             <FontAwesomeIcon
                               icon={faTrash}
                               size={20}

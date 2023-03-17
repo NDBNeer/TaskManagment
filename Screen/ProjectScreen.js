@@ -2,22 +2,41 @@ import React from "react";
 import {
   View,
   Text,
-  Button,
   SafeAreaView,
   TextInput,
-  Alert,
   TouchableOpacity,
   ScrollView,
+  Button,
 } from "react-native";
-import Header from "../Components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { logout } from "../Controller/UserController";
+import { addTaskToLocal, deleteTask } from "../Controller/TaskController";
+import { updateProject } from "../Controller/ProjectController";
+import { getProjects } from "../Controller/ProjectController";
 
 export default function ProjectScreen({ route, navigation }) {
-  const { project } = route.params;
+  const [project, setProject] = React.useState(route.params.project);
   const [tasks, setTasks] = React.useState(project.tasks);
   const [taskName, setTaskName] = React.useState("");
+
+  React.useEffect(() => {
+    async function getProjectsFunc() {
+      const localProjects = await getProjects();
+      if (localProjects === undefined) {
+        return;
+      }
+      if (localProjects === null) {
+        localProjects = [];
+      }
+
+      const project = localProjects.find(
+        (project) => project.id === route.params.project.id
+      );
+      setProject(project);
+      setTasks(project.tasks);
+    }
+    getProjectsFunc();
+  }, []);
 
   function addTask() {
     if (taskName === "") {
@@ -29,7 +48,7 @@ export default function ProjectScreen({ route, navigation }) {
       id: tasks.length + 1,
       name: taskName,
       description: "",
-      status: "To Do",
+      status: "todo",
       assignee: "",
       totalHoursWorked: 0,
       hourlyRate: 0,
@@ -38,16 +57,23 @@ export default function ProjectScreen({ route, navigation }) {
       endDate: project.endDate,
     };
     new_tasks.push(task);
+    addTaskToLocal(task, project.id);
+
     setTasks(new_tasks);
     setTaskName("");
   }
+
   return (
     <SafeAreaView>
       <View className="bg-gray-200 rounded-md m-3">
         <View
-          className="bg-indigo-900  p-2"
+          className="bg-indigo-900  p-2 flex flex-row"
           style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
         >
+          <Button
+            title="Back"
+            onPress={() => navigation.navigate("Dashboard")}
+          />
           <Text className="text-lg font-bold mb-2 text-white">New Task</Text>
         </View>
         <View className="flex flex-row justify-center items-center p-4">
@@ -81,24 +107,53 @@ export default function ProjectScreen({ route, navigation }) {
               className="w-full px-2 py-3 border-b-2 border-gray-300 text-base"
               placeholder="Create New Task"
               placeholderTextColor="#444"
-            >
-              {project.description}
-            </TextInput>
+              value={project.description}
+              onChangeText={(description) =>
+                setProject({ ...project, description: description })
+              }
+            ></TextInput>
           </View>
           <View className="flex flex-row justify-start items-center mb-1">
             <Text className="text-base mr-2 mt-2 ">Start Date:</Text>
-            <TextInput className=" px-2 py-3 border-b-2 border-gray-300 text-base">
-              {project.startDate}
-            </TextInput>
+            <TextInput
+              className=" px-2 py-3 border-b-2 border-gray-300 text-base"
+              value={project.startDate}
+              onChangeText={(startDate) =>
+                setProject({ ...project, startDate: startDate })
+              }
+            ></TextInput>
           </View>
           <View className="flex flex-row justify-start items-center mb-1">
             <Text className="text-base mr-2 mt-2">End Date:</Text>
-            <TextInput className=" px-2 py-3 border-b-2 border-gray-300 text-base">
-              {project.endDate}
-            </TextInput>
+            <TextInput
+              className=" px-2 py-3 border-b-2 border-gray-300 text-base"
+              value={project.endDate}
+              onChangeText={(endDate) =>
+                setProject({ ...project, endDate: endDate })
+              }
+            ></TextInput>
+          </View>
+          <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
+            <Text
+              className="text-white text-center"
+              onPress={() => {
+                const updatedProject = {
+                  ...project,
+                  description: project.description,
+                  startDate: project.startDate,
+                  endDate: project.endDate,
+                };
+                updateProject(updatedProject, project.id);
+                setProject(updatedProject);
+                setTasks(updatedProject.tasks);
+              }}
+            >
+              Update
+            </Text>
           </View>
         </View>
       </View>
+
       <View className="p-2">
         <Text className="text-xl ">Task List:</Text>
         <View className="h-0.5 w-full bg-indigo-900 "></View>
@@ -159,7 +214,7 @@ export default function ProjectScreen({ route, navigation }) {
                           <TouchableOpacity
                             className="ml-2"
                             onPress={() =>
-                              navigation.navigate("Task", { task })
+                              navigation.navigate("Task", { task, project })
                             }
                           >
                             <FontAwesomeIcon
@@ -168,7 +223,18 @@ export default function ProjectScreen({ route, navigation }) {
                               style={{ color: "indigo" }}
                             />
                           </TouchableOpacity>
-                          <TouchableOpacity className="ml-2">
+                          <TouchableOpacity
+                            className="ml-2"
+                            onPress={async () => {
+                              await deleteTask(project.id, task.id);
+                              var localProjects = await getProjects();
+                              var new_project = localProjects.find(
+                                (p) => p.id === project.id
+                              );
+                              setProject(new_project);
+                              setTasks(new_project.tasks);
+                            }}
+                          >
                             <FontAwesomeIcon
                               icon={faTrash}
                               size={20}
