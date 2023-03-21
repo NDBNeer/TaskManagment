@@ -27,6 +27,7 @@ export async function updateTask(updatedTask, projectId, taskId) {
         task.endDate = updatedTask.endDate;
         task.status = updatedTask.status;
         task.assignee = updatedTask.assignee;
+        task.assosiateTask = updatedTask.assosiateTask;
         task.totalHoursWorked = updatedTask.totalHoursWorked;
         task.hourlyRate = updatedTask.hourlyRate;
       }

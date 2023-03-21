@@ -267,18 +267,18 @@ export default function ProjectScreen({ route, navigation }) {
                           <TouchableOpacity
                             className="ml-2"
                             onPress={() => {
-                              alert(task.assosiateTask);
                               // check if the task with this id has associated projects
-                              if (task.assosicateTask != 0) {
-                                // before navigating
-                                navigation.dispatch(
-                                  StackActions.replace("Task", {
-                                    task,
-                                    project,
-                                  })
-                                );
-                              } else {
-                                if (isUserAdmin) {
+                              console.log(task.assosiateTask);
+                              if (task.assosiateTask != 0) {
+                                const assosiatedTaskObject =
+                                  project.tasks.filter(
+                                    (t) => t.id === task.assosiateTask
+                                  );
+                                console.log(assosiatedTaskObject);
+                                if (
+                                  assosiatedTaskObject.length > 0 &&
+                                  assosiatedTaskObject[0].status == "completed"
+                                ) {
                                   navigation.dispatch(
                                     StackActions.replace("Task", {
                                       task,
@@ -286,31 +286,18 @@ export default function ProjectScreen({ route, navigation }) {
                                     })
                                   );
                                 } else {
-                                  // check the status of the associated task
-                                  var assosiatedNewTask = tasks.find(
-                                    (t) => t.id === task.assosicateTask
+                                  alert(
+                                    "This task has incomplete associated tasks"
                                   );
-                                  if (
-                                    assosiatedNewTask.status === "Completed"
-                                  ) {
-                                    // navigation.navigate("Task", {
-                                    //   task,
-                                    //   project,
-                                    // });
-
-                                    navigation.dispatch(
-                                      StackActions.replace("Task", {
-                                        task,
-                                        project,
-                                      })
-                                    );
-                                  } else {
-                                    alert(
-                                      "You are not allowed to view this task, until the associated task is completed"
-                                    );
-                                  }
+                                  return;
                                 }
                               }
+                              navigation.dispatch(
+                                StackActions.replace("Task", {
+                                  task,
+                                  project,
+                                })
+                              );
                             }}
                           >
                             <FontAwesomeIcon
@@ -319,24 +306,28 @@ export default function ProjectScreen({ route, navigation }) {
                               style={{ color: "indigo" }}
                             />
                           </TouchableOpacity>
-                          <TouchableOpacity
-                            className="ml-2"
-                            onPress={async () => {
-                              await deleteTask(project.id, task.id);
-                              var localProjects = await getProjects();
-                              var new_project = localProjects.find(
-                                (p) => p.id === project.id
-                              );
-                              setProject(new_project);
-                              setTasks(new_project.tasks);
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              size={20}
-                              style={{ color: "red" }}
-                            />
-                          </TouchableOpacity>
+                          {isUserAdmin ? (
+                            <TouchableOpacity
+                              className="ml-2"
+                              onPress={async () => {
+                                await deleteTask(project.id, task.id);
+                                var localProjects = await getProjects();
+                                var new_project = localProjects.find(
+                                  (p) => p.id === project.id
+                                );
+                                setProject(new_project);
+                                setTasks(new_project.tasks);
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                size={20}
+                                style={{ color: "red" }}
+                              />
+                            </TouchableOpacity>
+                          ) : (
+                            <View className="bg-gray-200 rounded-md m-3"></View>
+                          )}
                         </View>
                       </View>
                     </View>

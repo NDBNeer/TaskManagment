@@ -260,16 +260,20 @@ export default function Dashboard({ navigation }) {
                               style={{ color: "indigo" }}
                             />
                           </TouchableOpacity>
-                          <TouchableOpacity
-                            className="ml-2"
-                            onPress={() => deleteProject(project.id)}
-                          >
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              size={20}
-                              style={{ color: "red" }}
-                            />
-                          </TouchableOpacity>
+                          {isUserAdmin ? (
+                            <TouchableOpacity
+                              className="ml-2"
+                              onPress={() => deleteProject(project.id)}
+                            >
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                size={20}
+                                style={{ color: "red" }}
+                              />
+                            </TouchableOpacity>
+                          ) : (
+                            <View className="bg-gray-200 rounded-md m-3"></View>
+                          )}
                         </View>
                       </View>
                     </View>

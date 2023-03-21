@@ -36,7 +36,7 @@ export default function TaskScreen({ route, navigation }) {
   ]);
 
   const [assosiateTasks, setAssosiateTasks] = React.useState([
-    { label: "None", value: null },
+    { label: "None", value: 0 },
   ]);
 
   console.log(task.status);
@@ -77,7 +77,9 @@ export default function TaskScreen({ route, navigation }) {
 
     setAssosiateTasks(newAssosiateTasks);
     if (task.assosiateTask !== null) {
-      setAssosiateTaskValue("None");
+      setAssosiateTaskValue(0);
+    } else {
+      setAssosiateTaskValue(task.assosiateTask);
     }
   }
 
