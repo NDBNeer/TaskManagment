@@ -77,7 +77,8 @@ export default function TaskScreen({ route, navigation }) {
 
     setAssosiateTasks(newAssosiateTasks);
     if (task.assosiateTask !== null) {
-      setAssosiateTaskValue("None");
+      console.log(task.assosiateTaskValue);
+      setAssosiateTaskValue("None")
     }
   }
 
