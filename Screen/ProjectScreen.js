@@ -168,7 +168,7 @@ export default function ProjectScreen({ route, navigation }) {
         )}
       </View>
 
-      <View className="flex flex-col bg-gray-200 rounded-md m-4 p-3">
+      <View className="flex flex-col bg-gray-200 rounded-md m-4 p-3 -mt-4">
         <View className="flex flex-col justify-center items-start">
           <View className="flex flex-row justify-start items-center mb-2">
             <Text className="text-lg font-bold">{project.name}</Text>
@@ -266,13 +266,12 @@ export default function ProjectScreen({ route, navigation }) {
         </View>
       </View>
 
-      <View className="p-2">
+      <View className="p-2 -mt-4">
         <Text className="text-xl ">Task List:</Text>
         <View className="h-0.5 w-full bg-indigo-900 "></View>
       </View>
-      <ScrollView className="-mt-3">
-        <View className="flex flex-col justify-center items-center m-3">
-          {tasks.map((task, index) => {
+      <ScrollView className="flex flex-col -mt-3">
+      {tasks.map((task, index) => {
             return (
               <View
                 key={index}
@@ -405,7 +404,6 @@ export default function ProjectScreen({ route, navigation }) {
               </View>
             );
           })}
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
