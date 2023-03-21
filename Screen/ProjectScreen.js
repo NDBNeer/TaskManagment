@@ -17,7 +17,8 @@ import { getProjects } from "../Controller/ProjectController";
 import DatePicker from "react-native-datepicker";
 import { getCurrentUser } from "../Controller/UserController";
 import { StackActions } from "@react-navigation/native";
-import Header from "../Components/Header";
+import tw from "tailwind-react-native-classnames";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function ProjectScreen({ route, navigation }) {
   const [project, setProject] = React.useState(route.params.project);
@@ -97,15 +98,9 @@ export default function ProjectScreen({ route, navigation }) {
 
   return (
     <SafeAreaView>
-      <Header navigation={navigation} />
-      <View>
-        {isUserAdmin ? (
-          <View className="bg-gray-200 rounded-md m-3">
-            <View
-              className="bg-indigo-900  p-2 flex flex-row"
-              style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
-            >
-               <TouchableOpacity
+        <View style={tw`bg-indigo-900 flex-row items-center p-4`}>
+      <View >
+         <TouchableOpacity
                             className="ml-2"
                             onPress={() =>
                   navigation.dispatch(StackActions.replace("Dashboard"))
@@ -118,8 +113,18 @@ export default function ProjectScreen({ route, navigation }) {
                             />
 
                           </TouchableOpacity>
-
-            
+      </View>
+       <View className="ml-3">
+        <Text style={tw`text-lg font-bold text-white`}>Project</Text>
+      </View>
+    </View>
+      <View>
+        {isUserAdmin ? (
+          <View className="bg-gray-200 rounded-md m-3">
+            <View
+              className="bg-indigo-900  p-2 flex flex-row"
+              style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
+            >
               <Text className="text-lg font-bold mb-2 text-white">
                 New Task
               </Text>
