@@ -98,7 +98,7 @@ export default function ProjectScreen({ route, navigation }) {
 
   return (
     <SafeAreaView>
-        <View style={tw`bg-indigo-900 flex-row items-center p-4`}>
+      <View style={tw`bg-indigo-900 flex-row items-center p-4`}>
       <View >
          <TouchableOpacity
                             className="ml-2"
@@ -243,10 +243,10 @@ export default function ProjectScreen({ route, navigation }) {
           </View> */}
           <View className="flex flex-row justify-start items-center mb-1">
             <Text className="text-base mr-2 mt-2">Total Estimated Budget:</Text>
-            <Text>{totalBudget}</Text>
+            <Text className="text-base mr-2 mt-2">{totalBudget}</Text>
           </View>
 
-          <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
+          <View className="w-1/5 bg-indigo-900 rounded-md py-3 mt-2 mb-1">
             <Text
               className="text-white text-center"
               onPress={() => {
