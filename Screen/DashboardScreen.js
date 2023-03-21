@@ -19,6 +19,7 @@ export default function Dashboard({ navigation }) {
   const [projects, setProjects] = React.useState([]);
 
   const [projectName, setProjectName] = React.useState("");
+  const [isUserAdmin, setIsUserAdmin] = React.useState(false);
 
   React.useEffect(() => {
     async function getProjectsFunc() {
@@ -44,6 +45,8 @@ export default function Dashboard({ navigation }) {
 
         if (currentUser?.type == "user") {
           localProjects = associatedProjects;
+        } else {
+          setIsUserAdmin(true);
         }
       }
       console.log(currentUser);
@@ -129,33 +132,42 @@ export default function Dashboard({ navigation }) {
   return (
     <SafeAreaView className="">
       <Header navigation={navigation} />
-      <View className="bg-gray-200 rounded-md m-3">
-        <View
-          className="bg-indigo-900  p-2"
-          style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
-        >
-          <Text className="text-lg font-bold mb-2 text-white">New Project</Text>
-        </View>
-        <View className="flex flex-row justify-center items-center p-4">
-          <View className="w-4/5">
-            <TextInput
-              className="w-full px-2 py-3 border-b-2 border-gray-500"
-              placeholder="Create New Project"
-              placeholderTextColor="#444"
-              value={projectName}
-              onChangeText={(projectName) => setProjectName(projectName)}
-            />
-          </View>
-          <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
-            <Text
-              className="text-white text-center"
-              onPress={() => addProject(projectName)}
+      <View>
+        {isUserAdmin ? (
+          <View className="bg-gray-200 rounded-md m-3">
+            <View
+              className="bg-indigo-900  p-2"
+              style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
             >
-              Create
-            </Text>
+              <Text className="text-lg font-bold mb-2 text-white">
+                New Project
+              </Text>
+            </View>
+            <View className="flex flex-row justify-center items-center p-4">
+              <View className="w-4/5">
+                <TextInput
+                  className="w-full px-2 py-3 border-b-2 border-gray-500"
+                  placeholder="Create New Project"
+                  placeholderTextColor="#444"
+                  value={projectName}
+                  onChangeText={(projectName) => setProjectName(projectName)}
+                />
+              </View>
+              <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
+                <Text
+                  className="text-white text-center"
+                  onPress={() => addProject(projectName)}
+                >
+                  Create
+                </Text>
+              </View>
+            </View>
           </View>
-        </View>
+        ) : (
+          <View className="bg-gray-200 rounded-md m-3"></View>
+        )}
       </View>
+
       <View className="p-3">
         <Text className="text-xl ">Project List:</Text>
         <View className="h-0.5 w-full bg-indigo-900 "></View>
