@@ -68,7 +68,7 @@ export default function Dashboard({ navigation }) {
       }
     }
     //  console.log(count)
-    if (count == length) {
+    if (count == length && length > 0) {
       return "Completed";
     } else {
       return "In Progress";

@@ -154,12 +154,12 @@ export default function ProjectScreen({ route, navigation }) {
               className="bg-indigo-900  p-2 flex flex-row"
               style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
             >
-              <Button
+              {/* <Button
                 title="Back"
                 onPress={() =>
                   navigation.dispatch(StackActions.replace("Dashboard"))
                 }
-              />
+              /> */}
               <Text className="text-lg font-bold mb-2 text-white">
                 New Task
               </Text>
