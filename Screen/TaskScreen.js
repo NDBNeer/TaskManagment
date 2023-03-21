@@ -1,7 +1,8 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   SafeAreaView,
   Text,
+  StyleSheet,
   View,
   TextInput,
   Button,
@@ -12,13 +13,15 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import global from "../global";
 import { updateTask } from "../Controller/TaskController";
 import { getProjects } from "../Controller/ProjectController";
+import DatePicker from 'react-native-datepicker';
 
 export default function TaskScreen({ route, navigation }) {
   const [task, setTask] = React.useState(route.params.task);
   const [project, setProject] = React.useState(route.params.project);
   const [datePicker, setDatePicker] = React.useState(false);
   const [date, setDate] = React.useState(new Date());
-
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [statusValue, setStatusValue] = React.useState(task.status);
   const [assosiateTaskValue, setAssosiateTaskValue] = React.useState(
     task.assosiateTask
@@ -38,6 +41,15 @@ export default function TaskScreen({ route, navigation }) {
   function showDatePicker() {
     setDatePicker(true);
   }
+  handleStartDateChange = (date) => {
+    setTask({ ...task, startDate: date });
+    setStartDate(date);
+  };
+  
+  handleEndDateChange = (date) => {
+    setTask({ ...task, endDate: date });
+    setEndDate(date);
+  };
   function onDateSelected(event, value) {
     setDate(value);
     setDatePicker(false);
@@ -114,35 +126,36 @@ export default function TaskScreen({ route, navigation }) {
               />
             </View>
 
-            <View className="flex flex-row justify-start items-center mb-1">
-              <Text className="text-sm mr-2">Start Date:</Text>
-              <Text>{task.startDate}</Text>
-              <View>
-                {datePicker && (
-                  <DateTimePicker
-                    value={date}
-                    mode={"date"}
-                    display={Platform.OS === "ios" ? "spinner" : "default"}
-                    is24Hour={true}
-                    onChange={onDateSelected}
-                    className="flex flex-start items-center justify-start w-40 h-40"
-                  />
-                )}
-              </View>
-              {!datePicker && (
-                <View classname="m-10 w-40">
-                  <Button
-                    title="Show Date Picker"
-                    color="green"
-                    onPress={showDatePicker}
-                  />
-                </View>
-              )}
-            </View>
-            <View className="flex flex-row justify-start items-center mb-1 ">
-              <Text className="text-sm mr-2">End Date:</Text>
-              <Text>{task.endDate}</Text>
-            </View>
+            <View style={styles.datePickerContainer}>
+        <Text style={styles.label}>Start Date:</Text>
+        <DatePicker
+          style={styles.datePicker}
+          date={startDate}
+          mode="date"
+          placeholder="Select Start Date"
+          format="YYYY-MM-DD"
+          minDate={new Date()}
+          // maxDate={endDate}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          onDateChange={this.handleStartDateChange}
+        />
+      </View>
+      <View style={styles.datePickerContainer}>
+        <Text style={styles.label}>End Date:</Text>
+        <DatePicker
+          style={styles.datePicker}
+          date={endDate}
+          mode="date"
+          placeholder="Select Start Date"
+          format="YYYY-MM-DD"
+          minDate={startDate}
+          // maxDate={endDate}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          onDateChange={this.handleEndDateChange}
+        />
+      </View>
             <View className="flex flex-row justify-start items-center mb-1">
               <Text className="text-sm mr-2">Status:</Text>
               <View className="m-1 w-40 z-50">
@@ -230,8 +243,8 @@ export default function TaskScreen({ route, navigation }) {
                       id: task.id,
                       name: task.name,
                       description: task.description,
-                      startDate: task.startDate,
-                      endDate: task.endDate,
+                      startDate: startDate,
+                      endDate: endDate,
                       status: statusValue,
                       assignee: assigneeValue,
                       assosiateTask: assosiateTaskValue,
@@ -256,3 +269,22 @@ export default function TaskScreen({ route, navigation }) {
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  datePickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  label: {
+    fontSize: 14,
+    marginRight: 10,
+  },
+  datePicker: {
+    width: 200,
+  },
+});
