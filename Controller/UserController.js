@@ -1,5 +1,3 @@
-import { Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Storage } from "expo-storage";
 
 export async function logout() {
@@ -34,6 +32,19 @@ export async function isUserLoggedIn() {
     return false;
   } catch (error) {
     return false;
+    // Error retrieving data
+  }
+}
+
+export async function getCurrentUser() {
+  try {
+    const value = JSON.parse(await Storage.getItem({ key: "currentUser" }));
+    if (value != null) {
+      return value;
+    }
+    return null;
+  } catch (error) {
+    return null;
     // Error retrieving data
   }
 }

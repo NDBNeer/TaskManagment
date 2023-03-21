@@ -13,7 +13,7 @@ import { addProjects, getProjects } from "../Controller/ProjectController";
 import Header from "../Components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { isUserLoggedIn } from "../Controller/UserController";
+import { isUserLoggedIn, getCurrentUser } from "../Controller/UserController";
 
 export default function Dashboard({ navigation }) {
   const [projects, setProjects] = React.useState([]);
@@ -22,14 +22,31 @@ export default function Dashboard({ navigation }) {
 
   React.useEffect(() => {
     async function getProjectsFunc() {
-      const localProjects = await getProjects();
+      var localProjects = await getProjects();
       if (localProjects === undefined) {
         return;
       }
       if (localProjects === null) {
         localProjects = [];
       }
+      const currentUser = await getCurrentUser();
+      if (currentUser === undefined) {
+        return;
+      } else {
+        associatedProjects = [];
+        localProjects.forEach((project) => {
+          project.tasks.forEach((task) => {
+            if (task.assignee == currentUser?.id) {
+              associatedProjects.push(project);
+            }
+          });
+        });
 
+        if (currentUser?.type == "user") {
+          localProjects = associatedProjects;
+        }
+      }
+      console.log(currentUser);
       setProjects(localProjects);
     }
     return () => {
@@ -47,16 +64,33 @@ export default function Dashboard({ navigation }) {
       }
     }
     async function getProjectsFunc() {
-      const localProjects = await getProjects();
+      var localProjects = await getProjects();
       if (localProjects === undefined) {
         return;
       }
       if (localProjects === null) {
         localProjects = [];
       }
+      const currentUser = await getCurrentUser();
+      if (currentUser === undefined) {
+        return;
+      } else {
+        associatedProjects = [];
+        localProjects.forEach((project) => {
+          project.tasks.forEach((task) => {
+            if (task.assignee == currentUser?.id) {
+              associatedProjects.push(project);
+            }
+          });
+        });
 
+        if (currentUser?.type == "user") {
+          localProjects = associatedProjects;
+        }
+      }
       setProjects(localProjects);
     }
+
     getProjectsFunc();
     checkLogin();
   }, []);

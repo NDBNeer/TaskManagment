@@ -5,9 +5,10 @@ import { AntDesign } from "@expo/vector-icons";
 import tw from "tailwind-react-native-classnames";
 
 export default function Header({ navigation }) {
-  function logoutFunc() {
-    logout();
-    navigation.navigate("LoginScreen");
+  async function logoutFunc() {
+    await logout().then(() => {
+      navigation.navigate("LoginScreen");
+    });
   }
   return (
     <View style={tw`bg-indigo-900 flex-row justify-between items-center p-4`}>
