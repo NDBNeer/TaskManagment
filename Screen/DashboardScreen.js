@@ -14,6 +14,7 @@ import Header from "../Components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { isUserLoggedIn, getCurrentUser } from "../Controller/UserController";
+import { StackActions } from "@react-navigation/native";
 
 export default function Dashboard({ navigation }) {
   const [projects, setProjects] = React.useState([]);
@@ -56,27 +57,22 @@ export default function Dashboard({ navigation }) {
       getProjectsFunc();
     };
   }, [projects]);
-  function isItComplete(project){
+  function isItComplete(project) {
     const length = project.tasks.length;
     const tasks = project.tasks;
     var count = 0;
-   for(i=0;i<tasks.length;i++){
-      if(tasks[i].status == "completed"){
-        count++
+    for (i = 0; i < tasks.length; i++) {
+      if (tasks[i].status == "completed") {
+        count++;
+      } else {
       }
-      else{
-        
-      }
-   }
-  //  console.log(count)
-   if(count==length){
-    return "Completed"
-   }
-   else{
-    return "In Progress"
-   }
-    
-    
+    }
+    //  console.log(count)
+    if (count == length) {
+      return "Completed";
+    } else {
+      return "In Progress";
+    }
   }
   React.useEffect(() => {
     async function checkLogin() {
@@ -110,6 +106,8 @@ export default function Dashboard({ navigation }) {
 
         if (currentUser?.type == "user") {
           localProjects = associatedProjects;
+        } else {
+          setIsUserAdmin(true);
         }
       }
       setProjects(localProjects);
@@ -240,7 +238,9 @@ export default function Dashboard({ navigation }) {
                           <View className="flex flex-col justify-center items-center">
                             <Text className="text-sm mr-2">Status</Text>
                             <View className="h-0.5 w-20 bg-gray-400"></View>
-                            <Text className="text-sm">{isItComplete(project)}</Text>
+                            <Text className="text-sm">
+                              {isItComplete(project)}
+                            </Text>
                           </View>
                         </View>
                       </View>
@@ -249,7 +249,9 @@ export default function Dashboard({ navigation }) {
                           <TouchableOpacity
                             className="ml-2"
                             onPress={() =>
-                              navigation.navigate("Project", { project })
+                              navigation.dispatch(
+                                StackActions.replace("Project", { project })
+                              )
                             }
                           >
                             <FontAwesomeIcon

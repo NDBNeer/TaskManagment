@@ -11,17 +11,14 @@ import {
 import { logout, logIn } from "../Controller/UserController";
 import global from "../global";
 
-
 export default function LoginScreen({ navigation }) {
  const [email, setEmail] = React.useState("");
  const [password, setPassword] = React.useState("");
-
 
  async function checkLogin() {
    let user = global.users.filter((user) => {
      return user.email === email && user.password === password;
    });
-
 
    if (user.length > 0) {
      try {
@@ -125,4 +122,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
