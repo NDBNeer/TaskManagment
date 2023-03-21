@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -13,7 +13,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import global from "../global";
 import { updateTask } from "../Controller/TaskController";
 import { getProjects } from "../Controller/ProjectController";
-import DatePicker from 'react-native-datepicker';
+import DatePicker from "react-native-datepicker";
+import { getCurrentUser } from "../Controller/UserController";
 
 export default function TaskScreen({ route, navigation }) {
   const [task, setTask] = React.useState(route.params.task);
@@ -46,7 +47,7 @@ export default function TaskScreen({ route, navigation }) {
     setTask({ ...task, startDate: date });
     setStartDate(date);
   };
-  
+
   handleEndDateChange = (date) => {
     setTask({ ...task, endDate: date });
     setEndDate(date);
@@ -73,6 +74,7 @@ export default function TaskScreen({ route, navigation }) {
       }
     });
     setAssosiateTasks(newAssosiateTasks);
+    setAssosiateTaskValue(newAssosiateTasks[0].value);
   }
 
   React.useEffect(() => {
@@ -98,11 +100,6 @@ export default function TaskScreen({ route, navigation }) {
       );
       setTask(task);
     }
-    
-  
-
-  
-
 
     getProjectsFunc();
     fetchAssignee();
@@ -137,35 +134,35 @@ export default function TaskScreen({ route, navigation }) {
             </View>
 
             <View style={styles.datePickerContainer}>
-        <Text style={styles.label}>Start Date:</Text>
-        <DatePicker
-          style={styles.datePicker}
-          date={startDate}
-          mode="date"
-          placeholder="Select Start Date"
-          format="YYYY-MM-DD"
-          minDate={new Date()}
-          // maxDate={endDate}
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          onDateChange={this.handleStartDateChange}
-        />
-      </View>
-      <View style={styles.datePickerContainer}>
-        <Text style={styles.label}>End Date:</Text>
-        <DatePicker
-          style={styles.datePicker}
-          date={endDate}
-          mode="date"
-          placeholder="Select Start Date"
-          format="YYYY-MM-DD"
-          minDate={startDate}
-          // maxDate={endDate}
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          onDateChange={this.handleEndDateChange}
-        />
-      </View>
+              <Text style={styles.label}>Start Date:</Text>
+              <DatePicker
+                style={styles.datePicker}
+                date={startDate}
+                mode="date"
+                placeholder="Select Start Date"
+                format="YYYY-MM-DD"
+                minDate={new Date()}
+                // maxDate={endDate}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                onDateChange={this.handleStartDateChange}
+              />
+            </View>
+            <View style={styles.datePickerContainer}>
+              <Text style={styles.label}>End Date:</Text>
+              <DatePicker
+                style={styles.datePicker}
+                date={endDate}
+                mode="date"
+                placeholder="Select Start Date"
+                format="YYYY-MM-DD"
+                minDate={startDate}
+                // maxDate={endDate}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                onDateChange={this.handleEndDateChange}
+              />
+            </View>
             <View className="flex flex-row justify-start items-center mb-1">
               <Text className="text-sm mr-2">Status:</Text>
               <View className="m-1 w-40 z-50">
@@ -282,12 +279,12 @@ export default function TaskScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   datePickerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 10,
   },
   label: {

@@ -20,6 +20,7 @@ export default function ProjectScreen({ route, navigation }) {
   const [tasks, setTasks] = React.useState(project.tasks);
   const [taskName, setTaskName] = React.useState("");
   const [isUserAdmin, setIsUserAdmin] = React.useState(false);
+  const [totalBudget, setTotalBudget] = React.useState(0);
 
   React.useEffect(() => {
     async function getProjectsFunc() {
@@ -35,6 +36,14 @@ export default function ProjectScreen({ route, navigation }) {
         (project) => project.id === route.params.project.id
       );
 
+      var totalCost = 0;
+      project.tasks.forEach((task) => {
+        taskCost = task.totalHoursWorked * task.hourlyRate;
+        totalCost += taskCost;
+      });
+
+      setTotalBudget(totalCost);
+
       const currentUser = await getCurrentUser();
       if (currentUser?.type != "user") {
         setIsUserAdmin(true);
@@ -45,9 +54,7 @@ export default function ProjectScreen({ route, navigation }) {
     }
     getProjectsFunc();
   }, []);
-  function isItComplete(){
-
-  }
+  function isItComplete() {}
   function addTask() {
     if (taskName === "") {
       alert("Please enter a name");
@@ -60,6 +67,7 @@ export default function ProjectScreen({ route, navigation }) {
       description: "",
       status: "todo",
       assignee: "",
+      assosiateTask: 0,
       totalHoursWorked: 0,
       hourlyRate: 0,
       // setting the start date to today in dd/mm/yyyy format
@@ -140,7 +148,7 @@ export default function ProjectScreen({ route, navigation }) {
               placeholder="Create New Task"
               placeholderTextColor="#444"
               value={project.description}
-              editable = {isUserAdmin}
+              editable={isUserAdmin}
               onChangeText={(description) =>
                 setProject({ ...project, description: description })
               }
@@ -151,7 +159,7 @@ export default function ProjectScreen({ route, navigation }) {
             <TextInput
               className=" px-2 py-3 border-b-2 border-gray-300 text-base"
               value={project.startDate}
-              editable = {isUserAdmin}
+              editable={isUserAdmin}
               onChangeText={(startDate) =>
                 setProject({ ...project, startDate: startDate })
               }
@@ -162,12 +170,17 @@ export default function ProjectScreen({ route, navigation }) {
             <TextInput
               className=" px-2 py-3 border-b-2 border-gray-300 text-base"
               value={project.endDate}
-              editable = {isUserAdmin}
+              editable={isUserAdmin}
               onChangeText={(endDate) =>
                 setProject({ ...project, endDate: endDate })
               }
             ></TextInput>
           </View>
+          <View className="flex flex-row justify-start items-center mb-1">
+            <Text className="text-base mr-2 mt-2">Total Estimated Budget:</Text>
+            <Text>{totalBudget}</Text>
+          </View>
+
           <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
             <Text
               className="text-white text-center"
@@ -248,9 +261,41 @@ export default function ProjectScreen({ route, navigation }) {
                         <View className="flex flex-row justify-center items-center ml-2">
                           <TouchableOpacity
                             className="ml-2"
-                            onPress={() =>
-                              navigation.navigate("Task", { task, project })
-                            }
+                            onPress={() => {
+                              alert(task.assosiateTask);
+                              // check if the task with this id has associated projects
+                              if (task.assosicateTask != 0) {
+                                // before navigating
+                                navigation.navigate("Task", {
+                                  task,
+                                  project,
+                                });
+                              } else {
+                                if (isUserAdmin) {
+                                  navigation.navigate("Task", {
+                                    task,
+                                    project,
+                                  });
+                                } else {
+                                  // check the status of the associated task
+                                  var assosiatedNewTask = tasks.find(
+                                    (t) => t.id === task.assosicateTask
+                                  );
+                                  if (
+                                    assosiatedNewTask.status === "Completed"
+                                  ) {
+                                    navigation.navigate("Task", {
+                                      task,
+                                      project,
+                                    });
+                                  } else {
+                                    alert(
+                                      "You are not allowed to view this task, until the associated task is completed"
+                                    );
+                                  }
+                                }
+                              }
+                            }}
                           >
                             <FontAwesomeIcon
                               icon={faEye}
