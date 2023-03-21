@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   View,
   Text,
   SafeAreaView,
+  StyleSheet,
   TextInput,
   TouchableOpacity,
   ScrollView,
@@ -13,6 +14,7 @@ import { faBackward, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { addTaskToLocal, deleteTask } from "../Controller/TaskController";
 import { updateProject } from "../Controller/ProjectController";
 import { getProjects } from "../Controller/ProjectController";
+import DatePicker from "react-native-datepicker";
 import { getCurrentUser } from "../Controller/UserController";
 import { StackActions } from "@react-navigation/native";
 import Header from "../Components/Header";
@@ -23,7 +25,8 @@ export default function ProjectScreen({ route, navigation }) {
   const [taskName, setTaskName] = React.useState("");
   const [isUserAdmin, setIsUserAdmin] = React.useState(false);
   const [totalBudget, setTotalBudget] = React.useState(0);
-
+  const [startDate, setStartDate] = useState(project.startDate);
+  const [endDate, setEndDate] = useState(project.endDate);
   React.useEffect(() => {
     async function getProjectsFunc() {
       const localProjects = await getProjects();
@@ -56,7 +59,16 @@ export default function ProjectScreen({ route, navigation }) {
     }
     getProjectsFunc();
   }, []);
+  handleStartDateChange = (date) => {
+    setProject({ ...project, startDate: date })
+    setStartDate(date);
+  };
 
+  handleEndDateChange = (date) => {
+    setProject({ ...project, endDate: date });
+   
+    setEndDate(date);
+  };
   function addTask() {
     if (taskName === "") {
       alert("Please enter a name");
@@ -170,7 +182,39 @@ export default function ProjectScreen({ route, navigation }) {
               }
             ></TextInput>
           </View>
-          <View className="flex flex-row justify-start items-center mb-1">
+          <View style={styles.datePickerContainer}>
+              <Text style={styles.label}>Start Date:</Text>
+              <DatePicker
+                style={styles.datePicker}
+                date={startDate}
+                mode="date"
+                placeholder="Select Start Date"
+                format="YYYY-MM-DD"
+                minDate={new Date()}
+                editable={isUserAdmin}
+                // maxDate={endDate}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                onDateChange={this.handleStartDateChange}
+              />
+            </View>
+            <View style={styles.datePickerContainer}>
+              <Text style={styles.label}>End Date:</Text>
+              <DatePicker
+                style={styles.datePicker}
+                date={endDate}
+                editable={isUserAdmin}
+                mode="date"
+                placeholder="Select Start Date"
+                format="YYYY-MM-DD"
+                minDate={startDate}
+                // maxDate={endDate}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                onDateChange={this.handleEndDateChange}
+              />
+            </View>
+          {/* <View className="flex flex-row justify-start items-center mb-1">
             <Text className="text-base mr-2 mt-2 ">Start Date:</Text>
             <TextInput
               className=" px-2 py-3 border-b-2 border-gray-300 text-base"
@@ -191,7 +235,7 @@ export default function ProjectScreen({ route, navigation }) {
                 setProject({ ...project, endDate: endDate })
               }
             ></TextInput>
-          </View>
+          </View> */}
           <View className="flex flex-row justify-start items-center mb-1">
             <Text className="text-base mr-2 mt-2">Total Estimated Budget:</Text>
             <Text>{totalBudget}</Text>
@@ -352,3 +396,22 @@ export default function ProjectScreen({ route, navigation }) {
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  datePickerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  label: {
+    fontSize: 14,
+    marginRight: 10,
+  },
+  datePicker: {
+    width: 200,
+  },
+});
