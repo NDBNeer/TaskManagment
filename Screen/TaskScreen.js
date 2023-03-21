@@ -6,8 +6,11 @@ import {
   View,
   TextInput,
   Button,
+  TouchableOpacity,
   ScrollView,
 } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faBackspace, faBackward, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import global from "../global";
@@ -16,7 +19,8 @@ import { getProjects } from "../Controller/ProjectController";
 import DatePicker from "react-native-datepicker";
 import { getCurrentUser } from "../Controller/UserController";
 import { StackActions } from "@react-navigation/native";
-
+import tw from "tailwind-react-native-classnames";
+import { AntDesign } from "@expo/vector-icons";
 export default function TaskScreen({ route, navigation }) {
   const [task, setTask] = React.useState(route.params.task);
   const [project, setProject] = React.useState(route.params.project);
@@ -114,23 +118,38 @@ export default function TaskScreen({ route, navigation }) {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <View className="flex flex-col bg-gray-200 rounded-md m-3">
-          <View
-            className="bg-indigo-900  p-2 flex flex-row items-center justify-evenly"
-            style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
-          >
-            <Button
-              title="Back"
-              onPress={() =>
+      <View style={tw`bg-indigo-900 flex-row items-center p-4`}>
+      <View >
+         <TouchableOpacity
+                            className="ml-2"
+                              onPress={() =>
                 navigation.dispatch(
                   StackActions.replace("Project", {
                     project,
                   })
                 )
               }
-            />
-            <Text className="text-base font-bold mb-2 text-white ">
+              >
+              <FontAwesomeIcon
+                              icon={faBackward}
+                              size={20}
+                              style={{ color: "white" }}
+              />
+
+          </TouchableOpacity>
+      </View>
+       <View className="ml-3">
+        <Text style={tw`text-lg font-bold text-white`}> Task</Text>
+      </View>
+    </View>
+      <ScrollView>
+        <View className="flex flex-col bg-gray-200 rounded-md m-3">
+          <View
+            className="bg-indigo-900  p-2 flex flex-row items-center justify-evenly"
+            style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
+          >
+          
+            <Text className="text-base font-bold text-white ">
               {task.name}
             </Text>
           </View>
@@ -253,11 +272,12 @@ export default function TaskScreen({ route, navigation }) {
             </View>
 
             <View>
-              <View className="flex flex-row justify-center items-center mt-10 mb-1">
-                <Button
-                  title="Save"
-                  color="green"
-                  onPress={async () => {
+              
+              <View className="flex flex-row justify-center items-center">
+                 <View className="w-1/5 bg-indigo-900 rounded-md py-3 justify-center items-center mt-5 mb-5">
+            <Text
+              className="text-white text-center"
+                onPress={async () => {
                     var new_task = {
                       id: task.id,
                       name: task.name,
@@ -279,7 +299,10 @@ export default function TaskScreen({ route, navigation }) {
                     setTask(new_task);
                     setProject(localProject);
                   }}
-                />
+            >
+              Save
+            </Text>
+          </View>
               </View>
             </View>
           </View>

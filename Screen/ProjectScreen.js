@@ -245,7 +245,7 @@ export default function ProjectScreen({ route, navigation }) {
             <Text className="text-base mr-2 mt-2">{totalBudget}</Text>
           </View>
 
-          <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
+          <View className="w-1/5 bg-indigo-900 rounded-md py-3 mt-2 mb-1">
             <Text
               className="text-white text-center"
               onPress={() => {
