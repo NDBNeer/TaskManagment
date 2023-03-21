@@ -15,6 +15,7 @@ import { updateTask } from "../Controller/TaskController";
 import { getProjects } from "../Controller/ProjectController";
 import DatePicker from "react-native-datepicker";
 import { getCurrentUser } from "../Controller/UserController";
+import { StackActions } from "@react-navigation/native";
 
 export default function TaskScreen({ route, navigation }) {
   const [task, setTask] = React.useState(route.params.task);
@@ -25,7 +26,7 @@ export default function TaskScreen({ route, navigation }) {
   const [endDate, setEndDate] = useState(task.endDate);
   const [statusValue, setStatusValue] = React.useState(task.status);
   const [assosiateTaskValue, setAssosiateTaskValue] = React.useState(
-    task.assosiateTask
+    task.assosiateTask === 0 ? "None" : task.assosiateTask
   );
   const [assigneeValue, setAssigneeValue] = React.useState(task.assignee);
   const [isUserAdmin, setIsUserAdmin] = React.useState(false);
@@ -66,15 +67,18 @@ export default function TaskScreen({ route, navigation }) {
   }
 
   function fetchAssosiateTask() {
-    var newAssosiateTasks = [];
+    var newAssosiateTasks = [{ label: "None", value: null }];
     project.tasks.map((task) => {
       // checking if the task is not the current task
       if (task.id !== route.params.task.id) {
         newAssosiateTasks.push({ label: task.name, value: task.id });
       }
     });
+
     setAssosiateTasks(newAssosiateTasks);
-    setAssosiateTaskValue(newAssosiateTasks[0].value);
+    if (task.assosiateTask !== null) {
+      setAssosiateTaskValue("None");
+    }
   }
 
   React.useEffect(() => {
@@ -116,7 +120,13 @@ export default function TaskScreen({ route, navigation }) {
           >
             <Button
               title="Back"
-              onPress={() => navigation.navigate("Project", { project })}
+              onPress={() =>
+                navigation.dispatch(
+                  StackActions.replace("Project", {
+                    project,
+                  })
+                )
+              }
             />
             <Text className="text-base font-bold mb-2 text-white ">
               {task.name}

@@ -14,6 +14,7 @@ import { addTaskToLocal, deleteTask } from "../Controller/TaskController";
 import { updateProject } from "../Controller/ProjectController";
 import { getProjects } from "../Controller/ProjectController";
 import { getCurrentUser } from "../Controller/UserController";
+import { StackActions } from "@react-navigation/native";
 
 export default function ProjectScreen({ route, navigation }) {
   const [project, setProject] = React.useState(route.params.project);
@@ -54,7 +55,7 @@ export default function ProjectScreen({ route, navigation }) {
     }
     getProjectsFunc();
   }, []);
-  function isItComplete() {}
+
   function addTask() {
     if (taskName === "") {
       alert("Please enter a name");
@@ -92,7 +93,9 @@ export default function ProjectScreen({ route, navigation }) {
             >
               <Button
                 title="Back"
-                onPress={() => navigation.navigate("Dashboard")}
+                onPress={() =>
+                  navigation.dispatch(StackActions.replace("Dashboard"))
+                }
               />
               <Text className="text-lg font-bold mb-2 text-white">
                 New Task
@@ -126,7 +129,9 @@ export default function ProjectScreen({ route, navigation }) {
             >
               <Button
                 title="Back"
-                onPress={() => navigation.navigate("Dashboard")}
+                onPress={() =>
+                  navigation.dispatch(StackActions.replace("Dashboard"))
+                }
               />
               <Text className="text-lg font-bold mb-2 text-white">
                 New Task
@@ -266,16 +271,20 @@ export default function ProjectScreen({ route, navigation }) {
                               // check if the task with this id has associated projects
                               if (task.assosicateTask != 0) {
                                 // before navigating
-                                navigation.navigate("Task", {
-                                  task,
-                                  project,
-                                });
-                              } else {
-                                if (isUserAdmin) {
-                                  navigation.navigate("Task", {
+                                navigation.dispatch(
+                                  StackActions.replace("Task", {
                                     task,
                                     project,
-                                  });
+                                  })
+                                );
+                              } else {
+                                if (isUserAdmin) {
+                                  navigation.dispatch(
+                                    StackActions.replace("Task", {
+                                      task,
+                                      project,
+                                    })
+                                  );
                                 } else {
                                   // check the status of the associated task
                                   var assosiatedNewTask = tasks.find(
@@ -284,10 +293,17 @@ export default function ProjectScreen({ route, navigation }) {
                                   if (
                                     assosiatedNewTask.status === "Completed"
                                   ) {
-                                    navigation.navigate("Task", {
-                                      task,
-                                      project,
-                                    });
+                                    // navigation.navigate("Task", {
+                                    //   task,
+                                    //   project,
+                                    // });
+
+                                    navigation.dispatch(
+                                      StackActions.replace("Task", {
+                                        task,
+                                        project,
+                                      })
+                                    );
                                   } else {
                                     alert(
                                       "You are not allowed to view this task, until the associated task is completed"
