@@ -9,12 +9,13 @@ import {
   Button,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faBackward, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { addTaskToLocal, deleteTask } from "../Controller/TaskController";
 import { updateProject } from "../Controller/ProjectController";
 import { getProjects } from "../Controller/ProjectController";
 import { getCurrentUser } from "../Controller/UserController";
 import { StackActions } from "@react-navigation/native";
+import Header from "../Components/Header";
 
 export default function ProjectScreen({ route, navigation }) {
   const [project, setProject] = React.useState(route.params.project);
@@ -84,6 +85,7 @@ export default function ProjectScreen({ route, navigation }) {
 
   return (
     <SafeAreaView>
+      <Header navigation={navigation} />
       <View>
         {isUserAdmin ? (
           <View className="bg-gray-200 rounded-md m-3">
@@ -91,12 +93,21 @@ export default function ProjectScreen({ route, navigation }) {
               className="bg-indigo-900  p-2 flex flex-row"
               style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
             >
-              <Button
-                title="Back"
-                onPress={() =>
+               <TouchableOpacity
+                            className="ml-2"
+                            onPress={() =>
                   navigation.dispatch(StackActions.replace("Dashboard"))
                 }
-              />
+                          >
+                                <FontAwesomeIcon
+                              icon={faBackward}
+                              size={20}
+                              style={{ color: "white" }}
+                            />
+
+                          </TouchableOpacity>
+
+            
               <Text className="text-lg font-bold mb-2 text-white">
                 New Task
               </Text>
