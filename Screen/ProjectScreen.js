@@ -138,6 +138,7 @@ export default function ProjectScreen({ route, navigation }) {
               placeholder="Create New Task"
               placeholderTextColor="#444"
               value={project.description}
+              editable = {isUserAdmin}
               onChangeText={(description) =>
                 setProject({ ...project, description: description })
               }
@@ -148,6 +149,7 @@ export default function ProjectScreen({ route, navigation }) {
             <TextInput
               className=" px-2 py-3 border-b-2 border-gray-300 text-base"
               value={project.startDate}
+              editable = {isUserAdmin}
               onChangeText={(startDate) =>
                 setProject({ ...project, startDate: startDate })
               }
@@ -158,6 +160,7 @@ export default function ProjectScreen({ route, navigation }) {
             <TextInput
               className=" px-2 py-3 border-b-2 border-gray-300 text-base"
               value={project.endDate}
+              editable = {isUserAdmin}
               onChangeText={(endDate) =>
                 setProject({ ...project, endDate: endDate })
               }

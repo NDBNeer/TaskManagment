@@ -20,13 +20,14 @@ export default function TaskScreen({ route, navigation }) {
   const [project, setProject] = React.useState(route.params.project);
   const [datePicker, setDatePicker] = React.useState(false);
   const [date, setDate] = React.useState(new Date());
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(task.startDate);
+  const [endDate, setEndDate] = useState(task.endDate);
   const [statusValue, setStatusValue] = React.useState(task.status);
   const [assosiateTaskValue, setAssosiateTaskValue] = React.useState(
     task.assosiateTask
   );
   const [assigneeValue, setAssigneeValue] = React.useState(task.assignee);
+  const [isUserAdmin, setIsUserAdmin] = React.useState(false);
 
   const [assignees, setAssignees] = React.useState([
     { label: "None", value: null },
@@ -87,12 +88,21 @@ export default function TaskScreen({ route, navigation }) {
       const project = localProjects.find(
         (project) => project.id === route.params.project.id
       );
+      const currentUser = await getCurrentUser();
+      if (currentUser?.type != "user") {
+        setIsUserAdmin(true);
+      }
       setProject(project);
       const task = project.tasks.find(
         (task) => task.id === route.params.task.id
       );
       setTask(task);
     }
+    
+  
+
+  
+
 
     getProjectsFunc();
     fetchAssignee();
