@@ -38,43 +38,46 @@ export default function LoginScreen({ navigation }) {
    }
  }
  return (
-   <SafeAreaView style={styles.container}>
-     <View className="flex flex-col items-center justify-center">
-       <View className="flex flex-row justify-center items-center ">
-         <Text className="text-4xl" style={styles.title}>Project Management</Text>
-       </View>
-
-
-       <View>
-         <View  style={styles.inputContainer} className="flex flex-row justify-center">
-           <Text style={styles.label}  className="text-xl">Email: </Text>
-           <TextInput
-             className="border-2 border-black"
-             placeholder="Enter your email"
-             value={email}
-             style={styles.input}
-             onChangeText={(email) => setEmail(email)}
-           />
-         </View>
-
-
-         <View  style={styles.inputContainer} className="flex flex-row justify-center">
-           <Text style={styles.label} className="text-xl">Password: </Text>
-           <TextInput
-             className="border-2 border-black"
-             placeholder="Enter your password"
-             textContentType="password"
-             value={password}
-             style={styles.input}
-             onChangeText={(password) => setPassword(password)}
-           />
-         </View>
-       </View>
-
-
-       <Button style= {styles.button} title="Login" onPress={checkLogin} />
-     </View>
-   </SafeAreaView>
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+   <SafeAreaView className="w-4/5 align-baseline justify-center">
+      <View className="bg-gray-200 rounded-md m-3">
+            <View
+              className="bg-indigo-900  p-2"
+              style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
+            >
+              <Text className="text-lg font-bold m-2 text-white text-center">
+               Project Management
+              </Text>
+            </View>
+            <View className="flex flex-col justify-center items-center p-4">
+              <View className="w-full">
+                <TextInput
+                  className="w-full px-2 py-3 border-b-2 border-gray-500"
+                  placeholder="Enter Email"
+                  placeholderTextColor="#444"
+                  value={email}
+                  onChangeText={(email) => setEmail(email)}
+                />
+                 <TextInput
+                  className="w-full px-2 py-3 border-b-2 border-gray-500"
+                  placeholder="Enter Password"
+                  placeholderTextColor="#444"
+                  textContentType="password"
+                  value={password}
+                  onChangeText={(password) => setPassword(password)}
+                />
+              </View>
+              <View className="pl-7 pr-7 bg-indigo-900 rounded-md py-3 m-3">
+                <Text
+                  className="text-white text-center text-lg font-bold"
+                  onPress={checkLogin}
+                  >
+                  Login
+                </Text>
+              </View>
+            </View>
+          </View>
+   </SafeAreaView></View>
  );
 }
 
