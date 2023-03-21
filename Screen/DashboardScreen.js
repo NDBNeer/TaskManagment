@@ -49,14 +49,35 @@ export default function Dashboard({ navigation }) {
           setIsUserAdmin(true);
         }
       }
-      console.log(currentUser);
+      // console.log(currentUser);
       setProjects(localProjects);
     }
     return () => {
       getProjectsFunc();
     };
   }, [projects]);
-
+  function isItComplete(project){
+    const length = project.tasks.length;
+    const tasks = project.tasks;
+    var count = 0;
+   for(i=0;i<tasks.length;i++){
+      if(tasks[i].status == "completed"){
+        count++
+      }
+      else{
+        
+      }
+   }
+  //  console.log(count)
+   if(count==length){
+    return "Completed"
+   }
+   else{
+    return "In Progress"
+   }
+    
+    
+  }
   React.useEffect(() => {
     async function checkLogin() {
       const isLoggedIn = await isUserLoggedIn();
@@ -219,7 +240,7 @@ export default function Dashboard({ navigation }) {
                           <View className="flex flex-col justify-center items-center">
                             <Text className="text-sm mr-2">Status</Text>
                             <View className="h-0.5 w-20 bg-gray-400"></View>
-                            <Text className="text-sm">Todo</Text>
+                            <Text className="text-sm">{isItComplete(project)}</Text>
                           </View>
                         </View>
                       </View>

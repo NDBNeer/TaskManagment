@@ -45,7 +45,9 @@ export default function ProjectScreen({ route, navigation }) {
     }
     getProjectsFunc();
   }, []);
+  function isItComplete(){
 
+  }
   function addTask() {
     if (taskName === "") {
       alert("Please enter a name");
@@ -238,7 +240,7 @@ export default function ProjectScreen({ route, navigation }) {
                           <View className="flex flex-col justify-center items-center">
                             <Text className="text-sm mr-2">Status</Text>
                             <View className="h-0.5 w-20 bg-gray-400"></View>
-                            <Text className="text-sm">Todo</Text>
+                            <Text className="text-sm">{task.status}</Text>
                           </View>
                         </View>
                       </View>
