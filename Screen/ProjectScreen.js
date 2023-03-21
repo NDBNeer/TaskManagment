@@ -13,11 +13,13 @@ import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { addTaskToLocal, deleteTask } from "../Controller/TaskController";
 import { updateProject } from "../Controller/ProjectController";
 import { getProjects } from "../Controller/ProjectController";
+import { getCurrentUser } from "../Controller/UserController";
 
 export default function ProjectScreen({ route, navigation }) {
   const [project, setProject] = React.useState(route.params.project);
   const [tasks, setTasks] = React.useState(project.tasks);
   const [taskName, setTaskName] = React.useState("");
+  const [isUserAdmin, setIsUserAdmin] = React.useState(false);
 
   React.useEffect(() => {
     async function getProjectsFunc() {
@@ -32,6 +34,12 @@ export default function ProjectScreen({ route, navigation }) {
       const project = localProjects.find(
         (project) => project.id === route.params.project.id
       );
+
+      const currentUser = await getCurrentUser();
+      if (currentUser?.type != "user") {
+        setIsUserAdmin(true);
+      }
+
       setProject(project);
       setTasks(project.tasks);
     }
@@ -65,37 +73,59 @@ export default function ProjectScreen({ route, navigation }) {
 
   return (
     <SafeAreaView>
-      <View className="bg-gray-200 rounded-md m-3">
-        <View
-          className="bg-indigo-900  p-2 flex flex-row"
-          style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
-        >
-          <Button
-            title="Back"
-            onPress={() => navigation.navigate("Dashboard")}
-          />
-          <Text className="text-lg font-bold mb-2 text-white">New Task</Text>
-        </View>
-        <View className="flex flex-row justify-center items-center p-4">
-          <View className="w-4/5">
-            <TextInput
-              className="w-full px-2 py-3 border-b-2 border-gray-500"
-              placeholder="Create New Task"
-              placeholderTextColor="#444"
-              value={taskName}
-              onChangeText={(taskName) => setTaskName(taskName)}
-            />
-          </View>
-          <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
-            <Text
-              className="text-white text-center"
-              onPress={() => addTask(taskName)}
+      <View>
+        {isUserAdmin ? (
+          <View className="bg-gray-200 rounded-md m-3">
+            <View
+              className="bg-indigo-900  p-2 flex flex-row"
+              style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
             >
-              Create
-            </Text>
+              <Button
+                title="Back"
+                onPress={() => navigation.navigate("Dashboard")}
+              />
+              <Text className="text-lg font-bold mb-2 text-white">
+                New Task
+              </Text>
+            </View>
+            <View className="flex flex-row justify-center items-center p-4">
+              <View className="w-4/5">
+                <TextInput
+                  className="w-full px-2 py-3 border-b-2 border-gray-500"
+                  placeholder="Create New Task"
+                  placeholderTextColor="#444"
+                  value={taskName}
+                  onChangeText={(taskName) => setTaskName(taskName)}
+                />
+              </View>
+              <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
+                <Text
+                  className="text-white text-center"
+                  onPress={() => addTask(taskName)}
+                >
+                  Create
+                </Text>
+              </View>
+            </View>
           </View>
-        </View>
+        ) : (
+          <View className="bg-gray-200 rounded-md m-3">
+            <View
+              className="bg-indigo-900  p-2 flex flex-row"
+              style={{ borderTopLeftRadius: 5, borderTopRightRadius: 5 }}
+            >
+              <Button
+                title="Back"
+                onPress={() => navigation.navigate("Dashboard")}
+              />
+              <Text className="text-lg font-bold mb-2 text-white">
+                New Task
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
+
       <View className="flex flex-col bg-gray-200 rounded-md m-4 p-3">
         <View className="flex flex-col justify-center items-start">
           <View className="flex flex-row justify-start items-center mb-2">
