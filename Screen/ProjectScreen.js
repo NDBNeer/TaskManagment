@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -61,13 +61,13 @@ export default function ProjectScreen({ route, navigation }) {
     getProjectsFunc();
   }, []);
   handleStartDateChange = (date) => {
-    setProject({ ...project, startDate: date })
+    setProject({ ...project, startDate: date });
     setStartDate(date);
   };
 
   handleEndDateChange = (date) => {
     setProject({ ...project, endDate: date });
-   
+
     setEndDate(date);
   };
   function addTask() {
@@ -98,26 +98,25 @@ export default function ProjectScreen({ route, navigation }) {
 
   return (
     <SafeAreaView>
-        <View style={tw`bg-indigo-900 flex-row items-center p-4`}>
-      <View >
-         <TouchableOpacity
-                            className="ml-2"
-                            onPress={() =>
-                  navigation.dispatch(StackActions.replace("Dashboard"))
-                }
-                          >
-                                <FontAwesomeIcon
-                              icon={faBackward}
-                              size={20}
-                              style={{ color: "white" }}
-                            />
-
-                          </TouchableOpacity>
+      <View style={tw`bg-indigo-900 flex-row items-center p-4`}>
+        <View>
+          <TouchableOpacity
+            className="ml-2"
+            onPress={() =>
+              navigation.dispatch(StackActions.replace("Dashboard"))
+            }
+          >
+            <FontAwesomeIcon
+              icon={faBackward}
+              size={20}
+              style={{ color: "white" }}
+            />
+          </TouchableOpacity>
+        </View>
+        <View className="ml-3">
+          <Text style={tw`text-lg font-bold text-white`}>Project</Text>
+        </View>
       </View>
-       <View className="ml-3">
-        <Text style={tw`text-lg font-bold text-white`}>Project</Text>
-      </View>
-    </View>
       <View>
         {isUserAdmin ? (
           <View className="bg-gray-200 rounded-md m-3">
@@ -188,37 +187,37 @@ export default function ProjectScreen({ route, navigation }) {
             ></TextInput>
           </View>
           <View style={styles.datePickerContainer}>
-              <Text style={styles.label}>Start Date:</Text>
-              <DatePicker
-                style={styles.datePicker}
-                date={startDate}
-                mode="date"
-                placeholder="Select Start Date"
-                format="YYYY-MM-DD"
-                minDate={new Date()}
-                editable={isUserAdmin}
-                // maxDate={endDate}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={this.handleStartDateChange}
-              />
-            </View>
-            <View style={styles.datePickerContainer}>
-              <Text style={styles.label}>End Date:</Text>
-              <DatePicker
-                style={styles.datePicker}
-                date={endDate}
-                editable={isUserAdmin}
-                mode="date"
-                placeholder="Select Start Date"
-                format="YYYY-MM-DD"
-                minDate={startDate}
-                // maxDate={endDate}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                onDateChange={this.handleEndDateChange}
-              />
-            </View>
+            <Text style={styles.label}>Start Date:</Text>
+            <DatePicker
+              style={styles.datePicker}
+              date={startDate}
+              mode="date"
+              placeholder="Select Start Date"
+              format="YYYY-MM-DD"
+              minDate={new Date()}
+              editable={isUserAdmin}
+              // maxDate={endDate}
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              onDateChange={this.handleStartDateChange}
+            />
+          </View>
+          <View style={styles.datePickerContainer}>
+            <Text style={styles.label}>End Date:</Text>
+            <DatePicker
+              style={styles.datePicker}
+              date={endDate}
+              editable={isUserAdmin}
+              mode="date"
+              placeholder="Select Start Date"
+              format="YYYY-MM-DD"
+              minDate={startDate}
+              // maxDate={endDate}
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              onDateChange={this.handleEndDateChange}
+            />
+          </View>
           {/* <View className="flex flex-row justify-start items-center mb-1">
             <Text className="text-base mr-2 mt-2 ">Start Date:</Text>
             <TextInput
@@ -243,7 +242,7 @@ export default function ProjectScreen({ route, navigation }) {
           </View> */}
           <View className="flex flex-row justify-start items-center mb-1">
             <Text className="text-base mr-2 mt-2">Total Estimated Budget:</Text>
-            <Text>{totalBudget}</Text>
+            <Text className="text-base mr-2 mt-2">{totalBudget}</Text>
           </View>
 
           <View className="w-1/5 bg-indigo-900 rounded-md py-3 ml-2">
@@ -328,7 +327,7 @@ export default function ProjectScreen({ route, navigation }) {
                             className="ml-2"
                             onPress={() => {
                               // check if the task with this id has associated projects
-                              console.log(task.assosiateTask);
+
                               if (task.assosiateTask != 0) {
                                 const assosiatedTaskObject =
                                   project.tasks.filter(
@@ -346,18 +345,28 @@ export default function ProjectScreen({ route, navigation }) {
                                     })
                                   );
                                 } else {
-                                  alert(
-                                    "This task has incomplete associated tasks"
-                                  );
-                                  return;
+                                  if (isUserAdmin) {
+                                    navigation.dispatch(
+                                      StackActions.replace("Task", {
+                                        task,
+                                        project,
+                                      })
+                                    );
+                                  } else {
+                                    alert(
+                                      "This task has incomplete associated tasks"
+                                    );
+                                    return;
+                                  }
                                 }
+                              } else {
+                                navigation.dispatch(
+                                  StackActions.replace("Task", {
+                                    task,
+                                    project,
+                                  })
+                                );
                               }
-                              navigation.dispatch(
-                                StackActions.replace("Task", {
-                                  task,
-                                  project,
-                                })
-                              );
                             }}
                           >
                             <FontAwesomeIcon
