@@ -5,6 +5,7 @@ import {
   Button,
   SafeAreaView,
   TextInput,
+  StyleSheet,
   Alert,
   TouchableOpacity,
   ScrollView,
@@ -21,6 +22,17 @@ export default function Dashboard({ navigation }) {
 
   const [projectName, setProjectName] = React.useState("");
   const [isUserAdmin, setIsUserAdmin] = React.useState(false);
+
+const styles = StyleSheet.create({
+  scrollView: {
+    height: '70%',
+  },
+  contentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 50
+  }
+});
 
   React.useEffect(() => {
     async function getProjectsFunc() {
@@ -149,7 +161,7 @@ export default function Dashboard({ navigation }) {
   }
 
   return (
-    <SafeAreaView className="">
+    <SafeAreaView>
       <Header navigation={navigation} />
       <View>
         {isUserAdmin ? (
@@ -191,7 +203,9 @@ export default function Dashboard({ navigation }) {
         <Text className="text-xl ">Project List:</Text>
         <View className="h-0.5 w-full bg-indigo-900 "></View>
       </View>
-      <ScrollView className="-mt-3">
+
+      <ScrollView  style={styles.scrollView} 
+        contentContainerStyle={styles.contentContainer}>
         <View className="flex flex-col justify-center items-center m-3">
           {projects.map((project, index) => {
             return (

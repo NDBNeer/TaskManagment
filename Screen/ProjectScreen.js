@@ -270,7 +270,7 @@ export default function ProjectScreen({ route, navigation }) {
         <Text className="text-xl ">Task List:</Text>
         <View className="h-0.5 w-full bg-indigo-900 "></View>
       </View>
-      <ScrollView className="flex flex-col -mt-3">
+      <ScrollView style={styles.scrollView}  contentContainerStyle={styles.contentContainer}>
       {tasks.map((task, index) => {
             return (
               <View
@@ -426,4 +426,12 @@ const styles = StyleSheet.create({
   datePicker: {
     width: 200,
   },
+   scrollView: {
+    height: '70%',
+  },
+  contentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 50
+  }
 });
