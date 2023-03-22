@@ -43,6 +43,7 @@ export default function TaskScreen({ route, navigation }) {
     { label: "None", value: 0 },
   ]);
 
+ 
   console.log(task.status);
 
   function showDatePicker() {
@@ -142,7 +143,7 @@ export default function TaskScreen({ route, navigation }) {
         <Text style={tw`text-lg font-bold text-white`}> Task</Text>
       </View>
     </View>
-      <ScrollView>
+   <ScrollView >
         <View className="flex flex-col bg-gray-200 rounded-md m-3">
           <View
             className="bg-indigo-900  p-2 flex flex-row items-center justify-evenly"
@@ -329,4 +330,5 @@ const styles = StyleSheet.create({
   datePicker: {
     width: 200,
   },
+
 });
